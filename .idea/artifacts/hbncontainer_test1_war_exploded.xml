@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="hbncontainer-test1:war exploded">
+    <output-path>$PROJECT_DIR$/target/hbncontainer-test1-1.0</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="hbncontainer-test1/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="hbncontainer-test1" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.vaadin:vaadin:6.7.7" />
+          <element id="library" level="project" name="Maven: org.vaadin.addons:hbncontainer:1.1.0" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
