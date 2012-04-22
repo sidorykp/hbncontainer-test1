@@ -8,6 +8,7 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/org/vaadin/addons/hbncontainer/1.1.0/hbncontainer-1.1.0-sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/../vaadin-hbncontainer-read-only/src" />
     </SOURCES>
   </library>
 </component>
