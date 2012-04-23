@@ -78,7 +78,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return (id == null ? "- " : id + " ") + firstName + " " + lastName;
     }
 
     @Override

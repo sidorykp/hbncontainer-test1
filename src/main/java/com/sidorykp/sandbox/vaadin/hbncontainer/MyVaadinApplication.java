@@ -17,7 +17,9 @@ package com.sidorykp.sandbox.vaadin.hbncontainer;
 
 import com.sidorykp.sandbox.vaadin.hbncontainer.domain.Person;
 import com.vaadin.Application;
+import com.vaadin.data.Container;
 import com.vaadin.data.hbnutil.HbnContainer;
+import com.vaadin.event.Action;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Table;
 import org.hibernate.Session;
@@ -32,9 +34,21 @@ import org.springframework.beans.factory.annotation.Configurable;
  */
 @SuppressWarnings("serial")
 @Configurable
-public class MyVaadinApplication extends Application implements HbnContainer.SessionManager
+public class MyVaadinApplication extends Application implements HbnContainer.SessionManager, Action.Handler
 {
+    protected static final Action CREATE = new Action("Create");
+
+    protected static final Action UPDATE = new Action("Update");
+
+    protected static final Action DELETE = new Action("Delete");
+
+    protected static final Action[] ACTIONS = new Action[] { CREATE, UPDATE, DELETE };
+
     private Window window;
+
+    protected HbnContainer c;
+
+    protected Table table;
 
     @Autowired
     protected SessionFactory sf;
@@ -53,15 +67,37 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
 
         sampleDataProvider.prepareSampleData();
 
-        HbnContainer c = new HbnContainer(Person.class, this);
-        Table table = new Table();
+        c = new HbnContainer(Person.class, this);
+        c.addListener(new Container.ItemSetChangeListener() {
+            @Override
+            public void containerItemSetChange(Container.ItemSetChangeEvent itemSetChangeEvent) {
+                log.debug("containerItemSetChange");
+            }
+        });
+        table = new Table();
         table.setImmediate(true);
         table.setContainerDataSource(c);
+        table.addActionHandler(this);
         window.addComponent(table);
     }
 
     @Override
     public Session getSession() {
         return sf.getCurrentSession();
+    }
+
+    @Override
+    public Action[] getActions(Object target, Object sender) {
+        return ACTIONS;
+    }
+
+    @Override
+    public void handleAction(Action action, Object sender, Object target) {
+        if (action == UPDATE) {
+            Person p = (Person) c.getItem(target).getPojo();
+            log.debug("update Person: " + p);
+            sampleDataProvider.updatePerson(p);
+            table.refreshRowCache();
+        }
     }
 }

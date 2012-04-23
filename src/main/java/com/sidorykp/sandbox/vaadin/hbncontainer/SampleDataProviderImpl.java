@@ -26,6 +26,11 @@ public class SampleDataProviderImpl implements SampleDataProvider {
     @Override
     @Transactional (propagation = Propagation.REQUIRED)
     public void prepareSampleData() {
+        Person b = new Person();
+        b.setFirstName("Big");
+        b.setLastName("Boss");
+        sf.getCurrentSession().persist(b);
+
         for (int i = 0; i < 20; ++ i) {
             Person p = new Person();
             p.setFirstName("Foo" + i);
@@ -38,7 +43,23 @@ public class SampleDataProviderImpl implements SampleDataProvider {
             a.setCity("Village" + i);
             addresses.add(a);
             p.setAddresses(addresses);
+            p.setBoss(b);
             sf.getCurrentSession().persist(p);
         }
+    }
+
+    @Override
+    @Transactional (propagation = Propagation.REQUIRED)
+    public void updatePerson(Person person) {
+        Person pH = (Person) sf.getCurrentSession().get(Person.class, person.getId());
+        pH.setFirstName(pH.getFirstName() + "1");
+        sf.getCurrentSession().merge(pH);
+    }
+
+    @Override
+    @Transactional (propagation = Propagation.REQUIRED)
+    public void deletePerson(Person person) {
+        Person pH = (Person) sf.getCurrentSession().get(Person.class, person.getId());
+        sf.getCurrentSession().delete(pH);
     }
 }

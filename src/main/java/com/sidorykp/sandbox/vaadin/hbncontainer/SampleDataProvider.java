@@ -1,5 +1,7 @@
 package com.sidorykp.sandbox.vaadin.hbncontainer;
 
+import com.sidorykp.sandbox.vaadin.hbncontainer.domain.Person;
+
 /**
  * Created with IntelliJ IDEA.
  * User: pawel
@@ -9,4 +11,8 @@ package com.sidorykp.sandbox.vaadin.hbncontainer;
  */
 public interface SampleDataProvider {
     public void prepareSampleData();
+
+    public void updatePerson(Person person);
+
+    public void deletePerson(Person person);
 }
