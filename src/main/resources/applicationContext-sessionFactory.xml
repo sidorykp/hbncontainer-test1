@@ -14,7 +14,8 @@
 	<bean
 		id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
-        p:dataSource-ref="dataSource" p:configLocation="classpath:hibernate.cfg.xml"/>
+        p:dataSource-ref="dataSource" p:configLocation="classpath:hibernate.cfg.xml"
+        p:packagesToScan="com.sidorykp.sandbox.vaadin.hbncontainer.domain"/>
 
     <bean id="dataSource"
           class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"

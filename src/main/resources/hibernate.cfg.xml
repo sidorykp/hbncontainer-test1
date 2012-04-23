@@ -19,8 +19,5 @@
         <property name="hibernate.cache.use_second_level_cache">false</property>
         <property name="hibernate.cache.use_query_cache">false</property>
 
-        <mapping class="com.sidorykp.sandbox.vaadin.hbncontainer.domain.AddressEntity"></mapping>
-        <mapping class="com.sidorykp.sandbox.vaadin.hbncontainer.domain.Person"></mapping>
-
     </session-factory>
 </hibernate-configuration>
