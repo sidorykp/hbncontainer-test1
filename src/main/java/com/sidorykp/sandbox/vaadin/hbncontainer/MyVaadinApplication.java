@@ -23,6 +23,8 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Table;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -41,9 +43,12 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
     @Autowired
     protected SessionFactory sf;
 
+    protected static final Logger log = LoggerFactory.getLogger(MyVaadinApplication.class);
+
     @Override
     public void init()
     {
+        log.debug("Application init");
         window = new Window("My Vaadin Application");
         setMainWindow(window);
 
