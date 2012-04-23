@@ -15,7 +15,6 @@
  */
 package com.sidorykp.sandbox.vaadin.hbncontainer;
 
-import com.sidorykp.sandbox.vaadin.hbncontainer.domain.AddressEntity;
 import com.sidorykp.sandbox.vaadin.hbncontainer.domain.Person;
 import com.vaadin.Application;
 import com.vaadin.data.hbnutil.HbnContainer;
@@ -27,9 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The Application's "main" class
@@ -43,6 +39,9 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
     @Autowired
     protected SessionFactory sf;
 
+    @Autowired
+    protected SampleDataProvider sampleDataProvider;
+
     protected static final Logger log = LoggerFactory.getLogger(MyVaadinApplication.class);
 
     @Override
@@ -52,22 +51,7 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
         window = new Window("My Vaadin Application");
         setMainWindow(window);
 
-        sf.getCurrentSession().beginTransaction();
-        for (int i = 0; i < 20; ++ i) {
-            Person p = new Person();
-            p.setFirstName("Foo" + i);
-            p.setLastName("Bar" + i);
-            AddressEntity a = new AddressEntity();
-            a.setCity("City" + i);
-            Set<AddressEntity> addresses = new HashSet<AddressEntity>();
-            addresses.add(a);
-            a = new AddressEntity();
-            a.setCity("Village" + i);
-            addresses.add(a);
-            p.setAddresses(addresses);
-            sf.getCurrentSession().persist(p);
-        }
-        sf.getCurrentSession().getTransaction().commit();
+        sampleDataProvider.prepareSampleData();
 
         HbnContainer c = new HbnContainer(Person.class, this);
         Table table = new Table();
