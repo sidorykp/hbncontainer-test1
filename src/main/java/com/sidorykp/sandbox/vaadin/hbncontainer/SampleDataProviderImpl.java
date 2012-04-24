@@ -57,7 +57,7 @@ public class SampleDataProviderImpl implements SampleDataProvider {
     @Override
     @Transactional (propagation = Propagation.REQUIRED)
     public void deletePerson(Person person) {
-        Person pH = (Person) sf.getCurrentSession().get(Person.class, person.getId());
+        Person pH = (Person) sf.getCurrentSession().load(Person.class, person.getId());
         sf.getCurrentSession().delete(pH);
     }
 }
