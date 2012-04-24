@@ -51,9 +51,7 @@ public class SampleDataProviderImpl implements SampleDataProvider {
     @Override
     @Transactional (propagation = Propagation.REQUIRED)
     public void updatePerson(Person person) {
-        Person pH = (Person) sf.getCurrentSession().get(Person.class, person.getId());
-        pH.setFirstName(pH.getFirstName() + "1");
-        sf.getCurrentSession().merge(pH);
+        sf.getCurrentSession().merge(person);
     }
 
     @Override

@@ -96,6 +96,7 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
         if (action == UPDATE) {
             Person p = (Person) c.getItem(target).getPojo();
             log.debug("update Person: " + p);
+            p.setFirstName(p.getFirstName() + "1");
             sampleDataProvider.updatePerson(p);
             table.refreshRowCache();
         }
