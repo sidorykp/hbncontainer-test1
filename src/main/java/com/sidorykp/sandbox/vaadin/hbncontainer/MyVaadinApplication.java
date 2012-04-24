@@ -40,13 +40,17 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
 
     protected static final Action UPDATE = new Action("Update");
 
+    protected static final Action UPDATE_HBN = new Action("Update in HBN");
+
     protected static final Action DELETE = new Action("Delete");
 
-    protected static final Action[] ACTIONS = new Action[] { CREATE, UPDATE, DELETE };
+    protected static final Action DELETE_HBN = new Action("Delete in HBN");
+
+    protected static final Action[] ACTIONS = new Action[] { CREATE, UPDATE, UPDATE_HBN, DELETE, DELETE_HBN };
 
     private Window window;
 
-    protected HbnContainer c;
+    protected HbnContainer<Person> c;
 
     protected Table table;
 
@@ -67,7 +71,7 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
 
         sampleDataProvider.prepareSampleData();
 
-        c = new HbnContainer(Person.class, this);
+        c = new HbnContainer<Person>(Person.class, this);
         c.addListener(new Container.ItemSetChangeListener() {
             @Override
             public void containerItemSetChange(Container.ItemSetChangeEvent itemSetChangeEvent) {
@@ -77,6 +81,8 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
         table = new Table();
         table.setImmediate(true);
         table.setContainerDataSource(c);
+        String[] personTableColumns = {"firstName", "lastName", "phoneNumber"};
+        table.setVisibleColumns(personTableColumns);
         table.addActionHandler(this);
         window.addComponent(table);
     }
@@ -93,12 +99,37 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
 
     @Override
     public void handleAction(Action action, Object sender, Object target) {
-        if (action == UPDATE) {
-            Person p = (Person) c.getItem(target).getPojo();
-            log.debug("update Person: " + p);
+        if (action == UPDATE_HBN) {
+            Person p = c.getItem(target).getPojo();
+            log.debug("update in HBN Person: " + p);
             p.setFirstName(p.getFirstName() + "1");
             sampleDataProvider.updatePerson(p);
             table.refreshRowCache();
+        } else if (action == UPDATE) {
+            Person p = c.getItem(target).getPojo();
+            log.debug("update Person: " + p);
+            p.setFirstName(p.getFirstName() + "1");
+            try {
+                // TODO does not work because HbnContainer should perform merge first and it does not
+                c.updateEntity(p);
+            } catch (Exception e) {
+                log.warn("exception in updateEntity for " + p.getId(), e);
+            }
+        } else if (action == CREATE) {
+            // TODO the entity has only ID and it is shown as a very thin row in the table
+            Long pId = (Long) c.addItem();
+            log.debug("create Person: " + pId);
+        } else if (action == DELETE_HBN) {
+            Person p = c.getItem(target).getPojo();
+            log.debug("delete in HBN Person: " + p);
+            sampleDataProvider.deletePerson(p);
+            // TODO does not work since the Table tries to reload the entity AFTER its removal
+            table.refreshRowCache();
+        } else if (action == DELETE) {
+            Person p = c.getItem(target).getPojo();
+            log.debug("delete Person: " + p);
+            // TODO does not work since the Table tries to reload the entity AFTER its removal
+            c.removeItem(p.getId());
         }
     }
 }
