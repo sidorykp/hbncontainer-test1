@@ -38,6 +38,8 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
 {
     protected static final Action CREATE = new Action("Create");
 
+    protected static final Action CREATE_HBN = new Action("Create in HBN");
+
     protected static final Action UPDATE = new Action("Update");
 
     protected static final Action UPDATE_HBN = new Action("Update in HBN");
@@ -46,7 +48,7 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
 
     protected static final Action DELETE_HBN = new Action("Delete in HBN");
 
-    protected static final Action[] ACTIONS = new Action[] { CREATE, UPDATE, UPDATE_HBN, DELETE, DELETE_HBN };
+    protected static final Action[] ACTIONS = new Action[] { CREATE, CREATE_HBN, UPDATE, UPDATE_HBN, DELETE, DELETE_HBN };
 
     private Window window;
 
@@ -80,6 +82,7 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
         });
         table = new Table();
         table.setImmediate(true);
+        table.setSelectable(true);
         table.setContainerDataSource(c);
         String[] personTableColumns = {"firstName", "lastName", "phoneNumber"};
         table.setVisibleColumns(personTableColumns);
@@ -115,6 +118,10 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
             } catch (Exception e) {
                 log.warn("exception in updateEntity for " + p.getId(), e);
             }
+        } else if (action == CREATE_HBN) {
+            // TODO the entity is created but it is not shown in the table
+            Person p = sampleDataProvider.createPerson();
+            log.debug("create Person: " + p);
         } else if (action == CREATE) {
             // TODO the entity has only ID and it is shown as a very thin row in the table
             Long pId = (Long) c.addItem();

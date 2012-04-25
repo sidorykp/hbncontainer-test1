@@ -12,6 +12,8 @@ import com.sidorykp.sandbox.vaadin.hbncontainer.domain.Person;
 public interface SampleDataProvider {
     public void prepareSampleData();
 
+    public Person createPerson();
+
     public void updatePerson(Person person);
 
     public void deletePerson(Person person);

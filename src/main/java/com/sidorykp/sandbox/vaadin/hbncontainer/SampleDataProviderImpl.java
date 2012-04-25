@@ -50,6 +50,13 @@ public class SampleDataProviderImpl implements SampleDataProvider {
 
     @Override
     @Transactional (propagation = Propagation.REQUIRED)
+    public Person createPerson() {
+        Person person = new Person();
+        return (Person) sf.getCurrentSession().merge(person);
+    }
+
+    @Override
+    @Transactional (propagation = Propagation.REQUIRED)
     public void updatePerson(Person person) {
         sf.getCurrentSession().merge(person);
     }
