@@ -50,9 +50,9 @@ public class SampleDataProviderImpl implements SampleDataProvider {
 
     @Override
     @Transactional (propagation = Propagation.REQUIRED)
-    public Person createPerson() {
+    public Long createPerson() {
         Person person = new Person();
-        return (Person) sf.getCurrentSession().merge(person);
+        return (Long) sf.getCurrentSession().save(person);
     }
 
     @Override

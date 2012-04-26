@@ -120,8 +120,8 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
             }
         } else if (action == CREATE_HBN) {
             // TODO the entity is created but it is not shown in the table
-            Person p = sampleDataProvider.createPerson();
-            log.debug("create Person: " + p);
+            Long pId = sampleDataProvider.createPerson();
+            log.debug("create Person: " + pId);
         } else if (action == CREATE) {
             // TODO the entity has only ID and it is shown as a very thin row in the table
             Long pId = (Long) c.addItem();
