@@ -14,7 +14,7 @@ public interface SampleDataProvider {
 
     public Long createPerson();
 
-    public void updatePerson(Person person);
+    public Person updatePerson(Person person);
 
     public void deletePerson(Person person);
 }

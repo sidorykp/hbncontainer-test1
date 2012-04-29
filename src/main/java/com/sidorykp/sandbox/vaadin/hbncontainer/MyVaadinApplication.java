@@ -84,8 +84,7 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
         table.setImmediate(true);
         table.setSelectable(true);
         table.setContainerDataSource(c);
-        String[] personTableColumns = {"firstName", "lastName", "phoneNumber"};
-        table.setVisibleColumns(personTableColumns);
+        table.setVisibleColumns(new String[]{"firstName", "lastName", "phoneNumber"});
         table.addActionHandler(this);
         window.addComponent(table);
     }
@@ -112,12 +111,9 @@ public class MyVaadinApplication extends Application implements HbnContainer.Ses
             Person p = c.getItem(target).getPojo();
             log.debug("update Person: " + p);
             p.setFirstName(p.getFirstName() + "1");
-            try {
-                // TODO does not work because HbnContainer should perform merge first and it does not
-                c.updateEntity(p);
-            } catch (Exception e) {
-                log.warn("exception in updateEntity for " + p.getId(), e);
-            }
+            p = sampleDataProvider.updatePerson(p);
+            // NOTE it does not perform any changes on the entity, it just updates the table state
+            c.updateEntity(p);
         } else if (action == CREATE_HBN) {
             // TODO the entity is created but it is not shown in the table
             Long pId = sampleDataProvider.createPerson();
